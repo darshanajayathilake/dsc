@@ -1,0 +1,28 @@
+Configuration TestConfig
+{
+    param
+    (
+        [String]
+        $ServiceName,
+
+        [String]
+        $State,
+
+        [String[]]
+        $ComputerName="localhost"
+    )
+
+    # It is best practice to explicitly import any required resources or modules.
+    Import-DSCResource -Module PSDesiredStateConfiguration
+
+    Node $ComputerName
+    {
+        Service $ServiceName
+        {
+            Name = $ServiceName
+            State = $State
+        }
+    }
+}
+
+testconfig -ServiceName "wsearch" -ComputerName "dsc","srv01","srv02" -State "running"
